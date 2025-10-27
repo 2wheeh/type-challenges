@@ -18,7 +18,13 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Includes<T extends readonly any[], U> = any
+type IsEqual<X, Y> = (<T>() => T extends X ? 0 : 1) extends (<T>() => T extends Y ? 0 : 1) ? true : false
+
+type Includes<T extends readonly unknown[], U> = T extends [infer First, ...infer Rest] ?
+  IsEqual<First, U> extends true
+    ? true
+    : Includes<Rest, U>
+  : false
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
